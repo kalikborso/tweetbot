@@ -77,6 +77,12 @@ describe TweetBot::Bot do
       tweet.stub(:text) { "this is a Good Afternoon" }
       bot.response_for(tweet).should =~ /afternoon response/
     end
+
+    it "calls the response if it is a proc" do
+      bot.add_responses_for_phrase "#reverse", ->(tweet){ tweet.text.gsub('#reverse','').strip.reverse }
+      tweet.stub(:text) { "reviled #reverse" }
+      bot.response_for(tweet).should =~ /deliver/
+    end
   end
 
   describe "#should_i_respond_to?" do
