@@ -41,7 +41,9 @@ module TweetBot
 
     def response_for(tweet)
       responses = responses_for_tweet(tweet)
-      "@#{tweet.user.screen_name} #{responses.sample}"
+      response = responses.sample
+      response = response.call(tweet) if response.class == Proc
+      "@#{tweet.user.screen_name} #{response}"
     end
 
     def should_i_respond_to?(tweet)
